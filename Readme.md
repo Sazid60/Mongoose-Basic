@@ -18,3 +18,9 @@
 - db.waaa.find({gender: "Male"}, {gender :1 }) this will show  only the gender field of the data and this is called fill filtering
 - More Fill Filtering when we want too show multiple field of data db.waaa.find({gender: "Male"}, {gender :1, name:1, age:1, email:1})
 - Project is similar to fill filtering except one problem. The problem is project nly works with find. if we use findOne it will not work db.waaa.find({gender:"Female"}).project({name:1, gender:1}) 
+
+<!-- ### Understanding of $eq, $neq, $gt, $lt, $gte, $lte operator -->
+- Structure of defining operator {field:  {$eq : value}}
+- db.waaa.find({gender : {$eq : "Female"}}, {gender:1, name:1})  ---- $neq is opposite to the $eq
+- db.waaa.find({age : {$gt : 18}})  ---- $lt is opposite to $gt
+- db.waaa.find({age: {$gte : 18}}).sort({age:1}) --- $lte is opposite to $gte
