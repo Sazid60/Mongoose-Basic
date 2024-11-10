@@ -18,16 +18,16 @@
   db.waaa.insertMany([
     { name: "Sara" },
     { name: "Para" }])
-```
+    ```
 - db.waaa.find() this will find all the data 
 - this will show all the Male gender and it will give all the data and parameters available
-  ```javascript
-  db.waaa.find({gender: "Male"}) 
+  ```javascript 
+  db.waaa.find({gender: "Male"})
   ```
 - this will show  only the gender field of the data and this is called fill filtering
-```javascript
-db.waaa.find({gender: "Male"}, {gender :1 })
-```
+ ```javascript
+ db.waaa.find({gender: "Male"}, {gender :1 })
+ ```
 - More Fill Filtering when we want too show multiple field of data 
   ```javascript
   db.waaa.find({gender: "Male"}, {gender :1, name:1, age:1, email:1})
@@ -96,6 +96,10 @@ db.waaa.find({
   db.waaa.find({age: {$ne :15, $lte:30}}).project({age:1})
   ```
 - we will use explicit and when conditions are more nested 
+- Structure for $and and others
+  ```javascript
+  {$and :[{ex1},{ex2},...,{exN}]}
+  ```
   ```javascript
   db.waaa.find({
     $and: [
@@ -114,7 +118,7 @@ db.waaa.find({
 }).project({interests :1})
 ```
 
-- if there is need to access mre nested data filed 
+- if there is need to access more nested data filed 
 ```javascript
 db.waaa.find({
     $or: [
@@ -126,3 +130,39 @@ db.waaa.find({
 // as this is searching in same field so we can search using $in as well
  db.waaa.find({ "skills.name" : {$in : ["JAVASCRIPT", "PYTHON"]}}).project({"skills.name":1})
 ```
+### Understanding of element operator, array query operator , $exists, $type, $size 
+- if we want to make sure the data really exist in the documents we will use $exists. There is problem with it it can not identify null and undefined
+- Structure 
+  ```javascript
+  {field : {$exist : <boolean>}}
+  ```
+- Which documents have the phone field will show here 
+  ```javascript
+  db.waaa.find({phone: {$exists : true}})
+  ```
+- as unknown is not present in the data so i will return false   
+  ```javascript
+  db.waaa.find({unknown: {$exists : true}})
+  ```
+
+- If we want to get specific type of data we will use $type operator
+- Structure 
+  ```javascript
+  {field : {$type : <BASON Type>}}
+  ```
+  - Example
+  ```javascript
+  db.waaa.find({age: {$type : "string"}}).project({age:1})
+  db.waaa.find({friends: {$type : "array"}}).project({friends:1})
+  ```
+
+  - If we want to figure out what if the array is empty we have to use array query operator $size. If will mention specific $size it will give us the exact sized array
+  - size is used only in array
+  - Structure 
+  ```javascript
+  db.waaa.find({friends : {$size:5}}).project({friends:1})
+  ```
+  - If we want to figure out any empty filed we have to use $type since the $size works only in array
+  ```javascript
+  db.waaa.find({company : {$type :"null"}}).project({company:1})
+  ``` 
