@@ -343,3 +343,13 @@ db.waaa.find({
     <!-- age:1,2,3,4 any incremental number it can be -->
     )
     ```
+    ### Understanding of delete documents, drop collection
+    - If we want to delete a document we have to use deleteOne
+    ```javascript
+    db.waaa.deleteOne({_id: ObjectId("6406ad63fc13ae5a40000065")})
+    ```
+    - If we want to create a new collection
+  ```javascript
+  db.post.drop({writeConcern : {w:1}})
+  <!-- Here post is a name of collection -->
+  ```
