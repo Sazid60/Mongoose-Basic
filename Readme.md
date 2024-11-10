@@ -265,3 +265,53 @@ db.waaa.find({
     { $push: {interests : {$each : ["Sleeping", "Texting"]}}}
     )
     ``` 
+
+    ### Understanding of $unset, $pop, $pull, $pullAll
+    - if we want to remove something completely we have to use $unset. it is completely opposite of #set
+    - The structure of unset is 
+    ```javascript
+    {$unset : {<field> : ""}}
+    ```
+    - If we want to remove the birthday
+    ```javascript
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$unset : {birthday : ""}}
+    )
+    <!-- This can be done in another method -->
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$unset : {age:1}}
+    <!-- this means age:true-->
+    )
+    ```
+    - If we want too remove something from array we have to use array update operator 
+    - Structure of $pop is 
+    ```javascript
+    {$pop :{<field> : <-1 | 1>}
+    <!-- here -1 means it will remove from first element of the array -->
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$pop : {friends : -1}}
+    )
+    <!-- here 1 means it will remove last element of array -->
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$pop : {friends : 1}}
+    )
+    ```
+    - If we want to pull a specific element by name and remove we have to use $pull operator
+    ```javascript
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$pull : {friends : "Tanmoy Parvez"}}
+    )
+    ```
+    - If we ant to pull multiple elements from an array we have to use $pullAll 
+    ```javascript
+    <!-- Structure of $pullAll is   {$pullAll : {field : [value, value,...],...}}-->
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$pullAll : {friends : ["Najmus Sakib", "Mir Hussain", "Fahim Ahammed Firoz"]}}
+    )
+    ```
