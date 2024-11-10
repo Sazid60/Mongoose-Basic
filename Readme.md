@@ -48,3 +48,28 @@
 },
     { age: 1, gender: 1, interests:1 }
 ).sort({ age: 1 })
+
+### Understanding of $and, $or and implicit vs explicit
+- using implicit db.waaa.find({age: {$ne :15, $lte:30}})
+- using implicit db.waaa.find({age: {$ne :15, $lte:30}}).project({age:1})
+- we will use explicit and when conditions are more nested db.waaa.find({
+    $and: [
+        {gender:"Female"},
+        {age:{$ne :15}},
+        {age:{$lte :30}}
+    ]
+}).project({age:1, gender:1}).sort({age:1})
+
+- $or method db.waaa.find({
+    $or: [
+    {interests: "Cooking"},
+    {interests : "Gaming"}
+    ]
+}).project({interests :1})
+
+- if there is need to access mre nested data filed db.waaa.find({
+    $or: [
+        {"skills.name" : "JAVASCRIPT"},
+        {"skills.name" : "PYTHON"}
+    ]
+}).project({skills :1})   --- as this is searching in same field so we can search using $in as well db.waaa.find({ "skills.name" : {$in : ["JAVASCRIPT", "PYTHON"]}}).project({"skills.name":1})
