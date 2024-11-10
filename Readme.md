@@ -166,3 +166,52 @@ db.waaa.find({
   ```javascript
   db.waaa.find({company : {$type :"null"}}).project({company:1})
   ``` 
+
+  ### Understanding of array,object and array of object query $all, $elemMtach
+  - I want a specific indexed valued data we can use normal method
+  ```javascript
+  <!-- regular method of matching only one in array -->
+  db.waaa.find({interests:"Cooking"}).project({interests:1})
+  ```
+  - For specific index positioned value
+  ```javascript
+  db.waaa.find({"interests.2":"Cooking"}).project({interests:1})
+  ```
+  - If we want to match exactly
+  ```javascript
+  db.waaa.find({interests : ["Gardening", "Gaming", "Cooking"]}).project({interests:1})  // It will follow the same ordered mentioned and give data
+  ```
+  - If we want to match in more flexible way without maintaining order we need to use $all operator
+  - Structure
+  ```javascript
+  {tags : {$all : ["a","b"]}}
+  ```
+  - Suppose we want to match "Gardening", "Gaming", "Cooking"
+  ```javascript
+  db.waaa.find({interests : { $all : ["Gardening", "Gaming", "Cooking"]}}).project({interests:1})
+  ```
+  - For object we can do the same. this example is strict to the order. Each and every field should be present
+   ```javascript
+   db.waaa.find({
+    skills: {
+        name:"JAVASCRIPT",
+        level:"Expert",
+        isLearning :true
+    }
+   }).project({skills:1})
+   ```
+   - If we want to enjoy flexibility we have to use $elemMatch
+  ```javascript
+  <!--
+   Structure :
+  {field : {$elemMatch : {<query1>, <query2>,...}}}
+   -->
+  db.waaa.find({
+    skills : {
+        $elemMatch :{
+            name:"JAVASCRIPT",
+            level:"Expert"
+        }
+    }
+  }).project({skills :1 })
+  ```
