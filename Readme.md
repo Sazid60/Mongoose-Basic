@@ -315,3 +315,31 @@ db.waaa.find({
     {$pullAll : {friends : ["Najmus Sakib", "Mir Hussain", "Fahim Ahammed Firoz"]}}
     )
     ```
+
+    ### More About $set (its in object) and $inc
+    - we can update a field of an object using $set as well. Though its is a non-primitive type. 
+    ```javascript
+     db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    {$set : {
+        "address.street" : "Atipara",
+        "address.city" : "Dhaka",
+        "address.country" : "Bangladesh"}}
+        <!-- there may be multiple fields or single field -->
+    )
+    ```
+    - To Update an array of object we have to use positional operator $ . this ensures only one document will be updated.
+    ```javascript
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065"), "education.major" : "Art"},
+    { $set : {"education.$.major" : "CSE"}}
+    )
+    ```
+    - If we want to increment using mongodb we have to use $inc
+    ```javascript
+    db.waaa.updateOne(
+    {_id: ObjectId("6406ad63fc13ae5a40000065")},
+    { $inc : {age:1}}
+    <!-- age:1,2,3,4 any incremental number it can be -->
+    )
+    ```
