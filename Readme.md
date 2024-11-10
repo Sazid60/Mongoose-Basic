@@ -215,3 +215,53 @@ db.waaa.find({
     }
   }).project({skills :1 })
   ```
+
+  ### Understanding of $set, $addToSet and $push
+
+- Structure for set method is 
+  ```javascript
+  {$set : {<field> : <value>,...}}
+
+  <!-- what is the system? -->
+  db.waa.UpdateOne(
+    {which one we will Update},
+    {what we will update},
+    {options}
+    )
+  ```
+  - for updating the age 
+   ```javascript
+   db.waaa.updateOne(
+    {_id : ObjectId("6406ad63fc13ae5a40000065")},
+    { $set: {age:20}}
+    )
+   ```
+   - $set replaces the field with new update things. This works meaningful only for primitive data type. if its a non primitive data type its not meaningful. We can use $set for non primitive only if we want to replace intentionally.
+   - For non-primitive data we will use $addToSet. This will set inside the array keeping no duplicates.
+   - Structure for it is
+    ```javascript
+    {$addToSet : {<field> : <value>}}
+    ```
+   - Example of $addToSet
+    ```javascript
+    db.waaa.updateOne(
+    {_id : ObjectId("6406ad63fc13ae5a40000065")},
+    { $addToSet: {interests : "Gaming"} }
+    )
+    ``` 
+    - If we want to add multiple things in the array we have to use $each.
+    ```javascript
+    db.waaa.updateOne(
+    {_id : ObjectId("6406ad63fc13ae5a40000065")},
+    { $addToSet: {interests : {$each : ["Sleeping", "Texting"]}}}
+    )
+    ``` 
+    - If we want to keep the duplicates we have to use $push
+    ```javascript
+    <!-- Structure -->
+    {$push : {<field> :<value>,...}}
+    db.waaa.updateOne(
+    {_id : ObjectId("6406ad63fc13ae5a40000065")},
+    { $push: {interests : {$each : ["Sleeping", "Texting"]}}}
+    )
+    ``` 
