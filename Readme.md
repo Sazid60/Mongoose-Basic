@@ -353,3 +353,70 @@ db.waaa.find({
   db.post.drop({writeConcern : {w:1}})
   <!-- Here post is a name of collection -->
   ```
+### Practice Problems
+![alt text](image.png)
+
+//problem-1
+```javascript
+db.waaa.find({age:{$gte : 30}}).project({name:1,email:1})
+```
+//problem-2
+```javascript
+db.waaa.find({
+    $or: [
+      {favoutiteColor : "Blue"},
+      {favoutiteColor : "Maroon"}
+    ]
+}).project({favoutiteColor :1 })
+```
+
+//problem-3
+```javascript
+db.waaa.find({
+    skills : {$size :0}
+}).project({skills:1})
+```
+//problem-4
+```javascript
+db.waaa.find({
+    $and: [
+      {"skills.name" : "JAVASCRIPT"},
+      {"skills.name" : "JAVA"},
+    ]
+}).project({"skills.name" :1 })
+```
+//problem-5
+```javascript
+db.waaa.updateOne(
+    {_id :  ObjectId("6406ad63fc13ae5a40000068")},
+    {$set : {email : "amccurry3@cnet.com"}}
+    )
+db.waaa.updateOne(
+    { _id: ObjectId("6406ad63fc13ae5a40000068") },
+    {
+        $addToSet: {
+            skills: {
+                "name": "Python"
+                ,
+                "level": "Beginner"
+                ,
+                "isLearning": true
+            }
+
+        }
+    })
+```
+//problem-6
+```javascript
+db.waaa.updateOne(
+    {_id :  ObjectId("6406ad63fc13ae5a40000068")},
+    {$addToSet : {languages : "Spanish"}}
+    )
+```
+//problem-7
+```javascript
+db.waaa.updateOne(
+    { _id: ObjectId("6406ad63fc13ae5a40000068") },
+    { $pull: { skills: { name: "C" } } }
+);
+```
