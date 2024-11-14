@@ -61,7 +61,7 @@ db.waaa.find({age : {$gt : 18}})
 ```javascript
 db.waaa.find({age : {$gte :18, $lte : 30}}, {age:1}).sort({age:1})
 ```  
-- We can match multiple filed using implicit and as well 
+- We can match multiple field using implicit and as well 
 ```javascript
 db.waaa.find({
     gender:"Female",
